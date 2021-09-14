@@ -4,7 +4,7 @@ import itertools
 class Puzzle:
     """
     A class representing an '8-puzzle'.
-    - 'board' should be a square list of lists with integer entries 0...width^2 - 1
+    - 'board' should be a square list of lists with integer entries
        e.g. [[1,2,3],[4,0,6],[7,5,8]]
     """
     def __init__(self, board):
@@ -20,7 +20,7 @@ class Puzzle:
         """
         N = self.width * self.width
 
-        return str(self) == ''.join(map(str, range(1,N))) + '0'
+        return str(self) == ''.join(map(str, range(1, N))) + '0'
 
     @property
     def actions(self):
@@ -36,16 +36,15 @@ class Puzzle:
 
         for i , j in itertools.product(range(self.width), range(self.width)):
             direcs = {
-              'R': (i, j-1),
-              'L': (i, j+1),
-              'D': (i-1, j),
-              'U': (i+1, j)
+              'Right': (i, j - 1),
+              'Left': (i, j + 1),
+              'Down': (i - 1, j),
+              'Up': (i + 1, j)
             }
 
-            for action, (r, c) in direcs.items():
-                if r >= 0 and c >= 0 and r < self.width and c < self.width and \
-                   self.board[r][c] == 0:
-                    move = create_move((i,j), (r,c)), action
+            for action, (row, column) in direcs.items():
+                if row >= 0 and column >= 0 and row < self.width and column < self.width and self.board[row][column] == 0:
+                    move = create_move((i, j), (row, column)), action
                     moves.append(move)
 
         return moves
@@ -54,11 +53,11 @@ class Puzzle:
     def manhattan(self):
         distance = 0
 
-        for i in range(3):
-            for j in range(3):
-                if self.board[i][j] != 0:
-                    x, y = divmod(self.board[i][j]-1, 3)
-                    distance += abs(x - i) + abs(y - j)
+        for row in range(3):
+            for column in range(3):
+                if self.board[row][column] != 0:
+                    x, y = divmod(self.board[row][column] - 1, 3)
+                    distance += abs(x - row) + abs(y - column)
 
         return distance
 
@@ -86,14 +85,13 @@ class Puzzle:
 
     def _move(self, at, to):
         """
-        Return a new puzzle where 'at' and 'to' tiles have been swapped.
-        NOTE: all moves should be 'actions' that have been executed
+        Return a new puzzle where 'at' and 'to' tiles have been swapped. All moves should be actions that have been executed
         """
         copy = self.copy()
-        i, j = at
-        r, c = to
+        at_row, at_column = at
+        to_row, to_column = to
 
-        copy.board[i][j], copy.board[r][c] = copy.board[r][c], copy.board[i][j]
+        copy.board[at_row][at_column], copy.board[to_row][to_column] = copy.board[to_row][to_column], copy.board[at_row][at_column]
 
         return copy
 

@@ -51,12 +51,12 @@ class Node:
 
     @property
     def score_h(self):
-        """"Score H"""
+        """ Score H """
         return self.puzzle.manhattan
 
     @property
     def score_f(self):
-        """"Score F"""
+        """ Score F """
         return self.score_h + self.score_g
 
     def __str__(self):
